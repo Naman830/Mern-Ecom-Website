@@ -2,7 +2,11 @@ import User from "../models/userModel.js"
 import asyncHandler from "../middlewares/asyncHandler.js"
 
 const createUser = asyncHandler(async (req, res) => {
-    res.send("Hello")
+    const{username, email, password} = req.body;
+
+    if (!username || !email || !password) {
+        throw new Error('Please fill all the inputs')
+    }
 })
 
 export default createUser

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 // Utils
 import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js"
 
 dotenv.config();
 const port = process.env.PORT || 5000;
