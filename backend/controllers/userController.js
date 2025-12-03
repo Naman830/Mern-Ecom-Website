@@ -15,8 +15,10 @@ export const createUser = asyncHandler(async (req, res) => {
 
   //   check user exist
   const userExists = await User.findOne({ email });
-  if (userExists) res.status(400).send("User Already exists")  
-    return;
+  if (userExists) {
+    res.status(400);
+    throw new Error("User Already exists");
+  }
 
   //   bcryption
   const salt = await bcrypt.genSalt(10);
