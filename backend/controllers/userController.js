@@ -5,6 +5,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
+// Create User
 export const createUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -42,6 +43,7 @@ export const createUser = asyncHandler(async (req, res) => {
   }
 });
 
+// login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -66,6 +68,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// logout Current User
 export const logutCurrentUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
