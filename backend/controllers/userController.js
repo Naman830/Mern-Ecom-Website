@@ -77,3 +77,9 @@ export const logutCurrentUser = asyncHandler(async (req, res) => {
 
   res.status(200).json({ message: "Logged Out Successfully" });
 });
+
+// Get All Users
+export const getAllUsers = asyncHandler(async(req, res) => {
+  const users = await User.find({})
+  res.json(users)
+})
