@@ -102,16 +102,15 @@ export const getCurrentUserProfile = asyncHandler(async (req, res) => {
 
 // Update Current User Profile
 export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
-  const user = User.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
-  }
 
-  if (req.body.password) {
-    user.password = req.body.password;
-
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
     const updatedUser = await user.save();
 
     res.json({
@@ -121,7 +120,7 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       isAdmin: updatedUser.isAdmin,
     });
   } else {
-    res.status(404)
-    throw new Error("User not found !!!")
+    res.status(404);
+    throw new Error("User not found !!!");
   }
 });
