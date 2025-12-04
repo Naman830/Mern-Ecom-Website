@@ -1,11 +1,19 @@
-import React from 'react'
+import {Outlet} from "react-router-dom"
+import Navigation from "./pages/auth/Navigation"
+import {ToastContainer} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   return (
-    <h1 class="bg-black text-9xl text-white text-center">
-    Hello world!
-  </h1>
-  )
-}
+    <>
+      <Navigation />
+      <ToastContainer />
+      <main className="py-3">
+        <Outlet />
+      </main>
+    </>
+  );
+};
 
 export default App
