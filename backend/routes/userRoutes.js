@@ -10,7 +10,8 @@ import {
 
   // Admin Routes
   deleteUserById,
-  getUserById
+  getUserById,
+  updateUserById
 } from "../controllers/userController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 
@@ -30,7 +31,11 @@ router
   .get(authenticate, getCurrentUserProfile)
   .put(authenticate, updateCurrentUserProfile);
 
-  // Admin Routes
-  router.route('/:id').delete(authenticate, authorizeAdmin, deleteUserById).get(authenticate, authorizeAdmin, getUserById)
+// Admin Routes
+router
+  .route("/:id")
+  .delete(authenticate, authorizeAdmin, deleteUserById)
+  .get(authenticate, authorizeAdmin, getUserById)
+  .put(authenticate, authorizeAdmin, updateUserById)
 
 export default router;

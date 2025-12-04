@@ -5,7 +5,6 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
-
 // ==================================================================================
 // ==================================================================================
 // User Routes
@@ -134,9 +133,6 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
 // ==================================================================================
 // ==================================================================================
 // Admin Routes
@@ -145,32 +141,53 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 
 // Delete User by Id
 export const deleteUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.params.id);
 
   if (user) {
     if (user.isAdmin) {
-      res.status(400)
-      throw new Error('Cannot delete Admin user')
+      res.status(400);
+      throw new Error("Cannot delete Admin user");
     }
 
-    await User.deleteOne({_id: user._id})
-    res.json({message: "User Removed"})
+    await User.deleteOne({ _id: user._id });
+    res.json({ message: "User Removed" });
   } else {
-    res.status(404)
-    throw new Error("User not found")
+    res.status(404);
+    throw new Error("User not found");
   }
-})
+});
 
 // Find User by Id
-
-export const getUserById = asyncHandler(async(req, res) => {
-  const user = await User.findById(req.params.id).select('-password')
+export const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select("-password");
 
   if (user) {
-    res.json(user)
+    res.json(user);
   } else {
-    res.status(404)
-    throw new Error('No User Found')
+    res.status(404);
+    throw new Error("No User Found");
   }
+});
 
-})
+// Update user By id
+export const updateUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
+    user.isAdmin = Boolean(req.body.isAdmin);
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("No User Found");
+  }
+});
