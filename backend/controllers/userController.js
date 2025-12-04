@@ -5,6 +5,13 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
+
+// ==================================================================================
+// ==================================================================================
+// User Routes
+// ==================================================================================
+// ==================================================================================
+
 // Create User
 export const createUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -126,3 +133,29 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found !!!");
   }
 });
+
+
+
+
+// ==================================================================================
+// ==================================================================================
+// Admin Routes
+// ==================================================================================
+// ==================================================================================
+
+export const deleteUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+
+  if (user) {
+    if (user.isAdmin) {
+      res.status(400)
+      throw new Error('Cannot delete Admin user')
+    }
+
+    await User.deleteOne({_id: user._id})
+    res.json({message: "User Removed"})
+  } else {
+    res.status(404)
+    throw new Error("User not found")
+  }
+})
