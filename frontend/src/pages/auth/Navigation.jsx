@@ -125,6 +125,8 @@ const Navigation = () => {
             </svg>
           )}
         </button>
+
+        
       </div>
 
       {/* LOGIN, REGISTER */}
