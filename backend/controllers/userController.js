@@ -143,6 +143,7 @@ export const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 // ==================================================================================
 // ==================================================================================
 
+// Delete User by Id
 export const deleteUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
@@ -158,4 +159,18 @@ export const deleteUserById = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error("User not found")
   }
+})
+
+// Find User by Id
+
+export const getUserById = asyncHandler(async(req, res) => {
+  const user = await User.findById(req.params.id).select('-password')
+
+  if (user) {
+    res.json(user)
+  } else {
+    res.status(404)
+    throw new Error('No User Found')
+  }
+
 })
