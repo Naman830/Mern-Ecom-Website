@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import "./Navigation.css";
 
 import { useSelector, useDispatch } from "react-redux";
-import { useLoginMutation } from "../../redux/api/usersApiSlice";
+import { useLogoutMutation  } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
 
 const Navigation = () => {
@@ -36,7 +36,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { logoutApiCall } = useLoginMutation();
+  const [logoutApiCall] = useLogoutMutation();
 
   const logoutHandler = async () => {
     try {
@@ -44,7 +44,7 @@ const Navigation = () => {
       dispatch(logout());
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
