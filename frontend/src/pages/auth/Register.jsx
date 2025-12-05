@@ -28,11 +28,12 @@ const Register = () => {
     }
   }, [navigate, redirect, userInfo]);
 
+  
   const submitHandler = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error("Password do not match");
+      toast.error("Passwords do not match");
     } else {
       try {
         const res = await register({ username, email, password }).unwrap();
@@ -65,7 +66,7 @@ const Register = () => {
               className="mt-1 p-2 border rounded w-full"
               placeholder="Enter name"
               value={username}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
 
