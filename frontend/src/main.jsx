@@ -17,15 +17,22 @@ import Register from "./pages/auth/Register.jsx";
 // USERS
 import Profile from "./pages/user/Profile.jsx";
 
+// ADMIN
+import AdminRoutes from "./pages/admin/AdminRoutes.jsx";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<Register />}></Route>
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />
       </Route>
 
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
+      {/* ADMIN ROUTES */}
+      <Route path="/admin" element={<AdminRoutes />}>
+        
+      </Route>
     </Route>
   )
 );
