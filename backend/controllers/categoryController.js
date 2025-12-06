@@ -1,6 +1,7 @@
 import Category from "../models/categoryModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
+// CREATE CATEGORY
 export const createCategory = asyncHandler(async (req, res) => {
   try {
     const { name } = req.body;
@@ -24,6 +25,7 @@ export const createCategory = asyncHandler(async (req, res) => {
   }
 });
 
+// UPDATE CATEGORY
 export const updateCategory = asyncHandler(async (req, res) => {
   try {
     const { name } = req.body;
@@ -38,7 +40,22 @@ export const updateCategory = asyncHandler(async (req, res) => {
 
     const updatedCategory = await category.save();
     res.json(updatedCategory);
-    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server error" });
+  }
+});
+
+// DELETE CATEGORY
+export const removeCategory = asyncHandler(async (req, res) => {
+  try {
+    const removed = await Category.findByIdAndDelete(req.params.categoryId);
+
+    if (!removed) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    res.json(removed);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server error" });
