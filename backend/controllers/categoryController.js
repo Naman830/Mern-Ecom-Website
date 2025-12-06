@@ -61,3 +61,16 @@ export const removeCategory = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal Server error" });
   }
 });
+
+// LIST CATEGORY
+export const listCategory = asyncHandler(async (req, res) => {
+  try {
+
+    const all = await Category.find({})
+    res.json(all);
+
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error.message);
+  }
+});
