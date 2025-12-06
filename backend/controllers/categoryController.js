@@ -65,7 +65,6 @@ export const removeCategory = asyncHandler(async (req, res) => {
 // LIST CATEGORY
 export const listCategory = asyncHandler(async (req, res) => {
   try {
-
     const all = await Category.find({})
     res.json(all);
 
@@ -74,3 +73,15 @@ export const listCategory = asyncHandler(async (req, res) => {
     return res.status(400).json(error.message);
   }
 });
+
+// READ SPECIFIC CATEGORY 
+export const readCategory = asyncHandler(async(req, res) => {
+    try {
+        const category = await Category.findOne({_id: req.params.id})
+        res.json(category)
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error.message) 
+    }
+})
