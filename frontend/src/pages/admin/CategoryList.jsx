@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+
+// COMPONENTS
 import CategoryForm from "../../components/CategoryForm";
+import Modal from "../../components/Modal";
+
 import {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
@@ -12,7 +16,7 @@ const CategoryList = () => {
   const { data: categories } = useFetchCategoriesQuery();
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [updateName, setUpdateName] = useState("");
+  const [updatingName, setUpdatingName] = useState("");
   const [modelVisible, setModelVisible] = useState(false);
 
   const [createCategory] = useCreateCategoryMutation();
@@ -20,28 +24,63 @@ const CategoryList = () => {
   const [deleteCategory] = useDeleteCategoryMutation();
 
   // HANDLE CREATE CATEGORY
-
   const handleCreateCategory = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!name) {
-      toast.error('Category name is required')
-      return
+      toast.error("Category name is required");
+      return;
     }
 
     try {
-      const result = await createCategory({name}).unwrap()
+      const result = await createCategory({ name }).unwrap();
       if (result.error) {
-        toast.error(result.error)
-      } else{
-        setName("")
-        toast.success( `${result.name}`)
+        toast.error(result.error);
+      } else {
+        setName("");
+        toast.success(`${result.name}`);
       }
     } catch (error) {
       console.error(error);
-      toast.error('Creating category Failed')
+      toast.error("Creating category Failed");
     }
+  };
+
+  // HANDLE UPDATE CATEGORY
+const handleUpdateCategory = async (e) => {
+  e.preventDefault();
+
+  if (!updatingName) {
+    toast.error("Category name is required");
+    return;
   }
+
+  try {
+    const result = await updateCategory({
+      categoryId: selectedCategory._id,
+      updatedCategory: { name: updatingName },
+    }).unwrap();
+
+    toast.success(`${result.name} is updated`);
+    
+    setSelectedCategory(null);   // <-- FIXED
+    setUpdatingName("");
+    setModelVisible(false);
+    
+  } catch (error) {
+    console.error(error);
+    toast.error("Updating category failed");
+  }
+};
+
+
+  // HANDLE DELETE CATEGORY
+
+  // const handleDeleteCategory =async (e) => {
+  //   e.preventDefault()
+
+  // }
+
   return (
     <div className="ml-[10rem] flex flex-col md:flex-row">
       {/* Admin Menu */}
@@ -64,7 +103,7 @@ const CategoryList = () => {
                 onClick={() => {
                   setModelVisible(true);
                   setSelectedCategory(category);
-                  setUpdateName(category.name);
+                  setUpdatingName(category.name);
                 }}
               >
                 {category.name}
@@ -72,6 +111,16 @@ const CategoryList = () => {
             </div>
           ))}
         </div>
+
+        <Modal isOpen={modelVisible} onClose={() => setModelVisible(false)}>
+          <CategoryForm
+            value={updatingName}
+            setValue={(value) => setUpdatingName(value)}
+            handleSubmit={handleUpdateCategory}
+            buttonText="Update"
+            // handleDelete={handleDeleteCategory}
+          />
+        </Modal>
       </div>
     </div>
   );

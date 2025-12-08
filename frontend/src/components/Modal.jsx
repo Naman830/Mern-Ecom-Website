@@ -1,6 +1,6 @@
 
 
-const Modal = ({isOpen, close, children}) => {
+const Modal = ({isOpen, onClose, children}) => {
   return (
     <>
          {isOpen && (
