@@ -75,11 +75,26 @@ const handleUpdateCategory = async (e) => {
 
 
   // HANDLE DELETE CATEGORY
+  const handleDeleteCategory =async (e) => {
+    e.preventDefault()
 
-  // const handleDeleteCategory =async (e) => {
-  //   e.preventDefault()
+    try {
+      
+      const result = await deleteCategory(selectedCategory._id).unwrap()
+      
+      if (result.error) {
+        toast.error(result.error)
+      } else{
+        toast.success(`${result.name} is Deleted`)
+        setSelectedCategory(null)
+        setModelVisible(false)
+      }
 
-  // }
+    } catch (error) {
+         console.error(error);
+    toast.error("Deletion category failed");
+    }
+  }
 
   return (
     <div className="ml-[10rem] flex flex-col md:flex-row">
@@ -118,7 +133,7 @@ const handleUpdateCategory = async (e) => {
             setValue={(value) => setUpdatingName(value)}
             handleSubmit={handleUpdateCategory}
             buttonText="Update"
-            // handleDelete={handleDeleteCategory}
+            handleDelete={handleDeleteCategory}
           />
         </Modal>
       </div>
